@@ -11,7 +11,7 @@ class ClientForm extends Component {
             placeholder="JC Hours Worked"
             aria-label="JC Hours Worked"
             aria-describedby="basic-addon2"
-            onChange={this.props.changeJCHours}
+            onChange={event => this.props.changeData("jcCurrentHours", event)}
           />
           <div className="input-group-append">
             <button
@@ -31,7 +31,7 @@ class ClientForm extends Component {
             placeholder="PAT Hours Worked"
             aria-label="PAT Hours Worked"
             aria-describedby="basic-addon2"
-            onChange={this.props.changePATHours}
+            onChange={event => this.props.changeData("patCurrentHours", event)}
           />
           <div className="input-group-append">
             <button
@@ -54,13 +54,13 @@ class ClientForm extends Component {
             placeholder="Begin"
             type="text"
             className="form-control"
-            onChange={this.props.changeBeginDate}
+            onChange={event => this.props.changeData("beginDate", event)}
           />
           <input
             placeholder="End"
             type="text"
             className="form-control"
-            onChange={this.props.changeEndDate}
+            onChange={event => this.props.changeData("endDate", event)}
           />
           <div className="input-group-append">
             <button
@@ -80,7 +80,7 @@ class ClientForm extends Component {
             placeholder="Change Authorized JC hours"
             aria-label="Change Authorized JC hours"
             aria-describedby="basic-addon2"
-            onChange={this.props.changeAuthJCHours}
+            onChange={event => this.props.changeData("jcAuthHours", event)}
           />
           <div className="input-group-append">
             <button
@@ -100,7 +100,7 @@ class ClientForm extends Component {
             placeholder="Change Authorized PAT hours"
             aria-label="Change Authorized PAT hours"
             aria-describedby="basic-addon2"
-            onChange={this.props.changeAuthPATHours}
+            onChange={event => this.props.changeData("patAuthHours", event)}
           />
           <div className="input-group-append">
             <button
@@ -120,7 +120,7 @@ class ClientForm extends Component {
             placeholder="Change Tier"
             aria-label="Change Tier"
             aria-describedby="basic-addon2"
-            onChange={this.props.changeTier}
+            onChange={event => this.props.changeData("tier", event)}
           />
           <div className="input-group-append">
             <button
@@ -140,7 +140,9 @@ class ClientForm extends Component {
             placeholder="Change Workplace Location"
             aria-label="Change Workplace Location"
             aria-describedby="basic-addon2"
-            onChange={this.props.changeWorkplaceLocation}
+            onChange={event =>
+              this.props.changeData("workplaceLocation", event)
+            }
           />
           <div className="input-group-append">
             <button

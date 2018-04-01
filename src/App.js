@@ -51,18 +51,11 @@ class App extends Component {
     };
     this.goHome = this.goHome.bind(this);
     this.changeClient = this.changeClient.bind(this);
-    this.changeJCHours = this.changeJCHours.bind(this);
     this.submitNewJCHours = this.submitNewJCHours.bind(this);
-    this.changePATHours = this.changePATHours.bind(this);
     this.submitNewPATHours = this.submitNewPATHours.bind(this);
-    this.changeBeginDate = this.changeBeginDate.bind(this);
-    this.changeEndDate = this.changeEndDate.bind(this);
     this.submitNewDates = this.submitNewDates.bind(this);
-    this.changeAuthJCHours = this.changeAuthJCHours.bind(this);
     this.submitNewAuthJCHours = this.submitNewAuthJCHours.bind(this);
-    this.changeAuthPATHours = this.changeAuthPATHours.bind(this);
     this.submitNewAuthPATHours = this.submitNewAuthPATHours.bind(this);
-    this.changeWorkplaceLocation = this.changeWorkplaceLocation.bind(this);
     this.submitNewWorkplaceLocation = this.submitNewWorkplaceLocation.bind(
       this
     );
@@ -70,10 +63,10 @@ class App extends Component {
     this.resetPATHours = this.resetPATHours.bind(this);
     this.goToAddClient = this.goToAddClient.bind(this);
     this.addNewClient = this.addNewClient.bind(this);
-    this.changeTier = this.changeTier.bind(this);
     this.submitNewTier = this.submitNewTier.bind(this);
     this.makeActive = this.makeActive.bind(this);
     this.makeInactive = this.makeInactive.bind(this);
+    this.changeData = this.changeData.bind(this);
   }
 
   goHome() {
@@ -93,10 +86,29 @@ class App extends Component {
     });
   }
 
-  changeJCHours(event) {
-    this.setState({
-      jcCurrentHours: parseInt(event.target.value, 10)
-    });
+  changeData(data, event) {
+    switch (data) {
+      case "jcCurrentHours":
+      case "patCurrentHours":
+      case "jcAuthHours":
+      case "patAuthHours":
+        this.setState({
+          [data]: parseInt(event.target.value, 10)
+        });
+        break;
+
+      case "beginDate":
+      case "endDate":
+      case "tier":
+      case "workplaceLocation":
+        this.setState({
+          [data]: event.target.value
+        });
+        break;
+
+      default:
+        break;
+    }
   }
 
   submitNewJCHours() {
@@ -111,12 +123,6 @@ class App extends Component {
     });
   }
 
-  changePATHours(event) {
-    this.setState({
-      patCurrentHours: parseInt(event.target.value, 10)
-    });
-  }
-
   submitNewPATHours() {
     var clientState = this.state.clients;
     clientState.forEach(client => {
@@ -126,18 +132,6 @@ class App extends Component {
     });
     this.setState({
       clients: clientState
-    });
-  }
-
-  changeBeginDate(event) {
-    this.setState({
-      beginDate: event.target.value
-    });
-  }
-
-  changeEndDate(event) {
-    this.setState({
-      endDate: event.target.value
     });
   }
 
@@ -154,12 +148,6 @@ class App extends Component {
     });
   }
 
-  changeAuthJCHours(event) {
-    this.setState({
-      jcAuthHours: parseInt(event.target.value, 10)
-    });
-  }
-
   submitNewAuthJCHours() {
     var clientState = this.state.clients;
     clientState.forEach(client => {
@@ -169,12 +157,6 @@ class App extends Component {
     });
     this.setState({
       clients: clientState
-    });
-  }
-
-  changeAuthPATHours(event) {
-    this.setState({
-      patAuthHours: parseInt(event.target.value, 10)
     });
   }
 
@@ -190,12 +172,6 @@ class App extends Component {
     });
   }
 
-  changeTier(event) {
-    this.setState({
-      tier: event.target.value
-    });
-  }
-
   submitNewTier() {
     var clientState = this.state.clients;
     clientState.forEach(client => {
@@ -205,12 +181,6 @@ class App extends Component {
     });
     this.setState({
       clients: clientState
-    });
-  }
-
-  changeWorkplaceLocation(event) {
-    this.setState({
-      workplaceLocation: event.target.value
     });
   }
 
@@ -337,21 +307,14 @@ class App extends Component {
           <div>
             <ClientData clientData={this.state.currentClient} />
             <ClientForm
+              changeData={this.changeData}
               clientData={this.state.currentClient}
-              changeJCHours={this.changeJCHours}
               submitNewJCHours={this.submitNewJCHours}
-              changePATHours={this.changePATHours}
               submitNewPATHours={this.submitNewPATHours}
-              changeBeginDate={this.changeBeginDate}
-              changeEndDate={this.changeEndDate}
               submitNewDates={this.submitNewDates}
-              changeAuthJCHours={this.changeAuthJCHours}
               submitNewAuthJCHours={this.submitNewAuthJCHours}
-              changeAuthPATHours={this.changeAuthPATHours}
               submitNewAuthPATHours={this.submitNewAuthPATHours}
-              changeTier={this.changeTier}
               submitNewTier={this.submitNewTier}
-              changeWorkplaceLocation={this.changeWorkplaceLocation}
               submitNewWorkplaceLocation={this.submitNewWorkplaceLocation}
               resetJCHours={this.resetJCHours}
               resetPATHours={this.resetPATHours}
