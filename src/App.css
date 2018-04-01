@@ -9,6 +9,10 @@ form {
   margin-top: 1rem;
 }
 
-.dropdown-item {
+a {
   cursor: pointer;
+}
+
+.mainButton {
+  margin: 1rem;
 }

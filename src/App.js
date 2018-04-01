@@ -1,76 +1,131 @@
 import React, { Component } from "react";
 import "./Reset.css";
 import "./App.css";
-import EmployeeDropdown from "./EmployeeDropdown";
-import EmployeeData from "./EmployeeData";
-import EmployeeForm from "./EmployeeForm";
-import AddEmployee from "./AddEmployee";
+import ClientData from "./ClientData";
+import ClientForm from "./ClientForm";
+import AddClient from "./AddClient";
+import ClientList from "./ClientList";
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      employees: [
+      clients: [
         {
+          id: 1,
           name: "Natalie Marvin",
-          allottedHours: 40,
+          jcAuthHours: 40,
+          jcCurrentHours: 22,
+          patAuthHours: 25,
+          patCurrentHours: 12,
           beginDate: "03-01-18",
           endDate: "03-31-18",
-          currentHours: 22
+          tier: 1,
+          workplaceLocation: "100 South Street Fort Collins, CO 80525",
+          active: true
         },
         {
+          id: 2,
           name: "BJ Collins",
-          allottedHours: 80,
+          jcAuthHours: 80,
+          jcCurrentHours: 75,
+          patAuthHours: 43,
+          patCurrentHours: 22,
           beginDate: "02-01-18",
           endDate: "04-31-18",
-          currentHours: 75
+          tier: 2,
+          workplaceLocation: "300 North Street Greeley, CO 80538",
+          active: true
         }
       ],
-      currentEmployee: "none",
-      addHours: 0,
+      jcCurrentHours: 0,
+      patCurrentHours: 0,
       beginDate: "",
       endDate: "",
-      allottedHours: 0,
-      addEmployee: false
+      jcAuthHours: 0,
+      patAuthHours: 0,
+      tier: "",
+      workplaceLocation: "",
+      currentClient: "none",
+      addClient: false
     };
-    this.changeEmployee = this.changeEmployee.bind(this);
-    this.changeHours = this.changeHours.bind(this);
-    this.submitNewHours = this.submitNewHours.bind(this);
+    this.goHome = this.goHome.bind(this);
+    this.changeClient = this.changeClient.bind(this);
+    this.changeJCHours = this.changeJCHours.bind(this);
+    this.submitNewJCHours = this.submitNewJCHours.bind(this);
+    this.changePATHours = this.changePATHours.bind(this);
+    this.submitNewPATHours = this.submitNewPATHours.bind(this);
     this.changeBeginDate = this.changeBeginDate.bind(this);
     this.changeEndDate = this.changeEndDate.bind(this);
     this.submitNewDates = this.submitNewDates.bind(this);
-    this.changeAllottedHours = this.changeAllottedHours.bind(this);
-    this.submitNewAllottedHours = this.submitNewAllottedHours.bind(this);
-    this.resetHours = this.resetHours.bind(this);
-    this.goToAddEmployee = this.goToAddEmployee.bind(this);
-    this.addNewEmployee = this.addNewEmployee.bind(this);
+    this.changeAuthJCHours = this.changeAuthJCHours.bind(this);
+    this.submitNewAuthJCHours = this.submitNewAuthJCHours.bind(this);
+    this.changeAuthPATHours = this.changeAuthPATHours.bind(this);
+    this.submitNewAuthPATHours = this.submitNewAuthPATHours.bind(this);
+    this.changeWorkplaceLocation = this.changeWorkplaceLocation.bind(this);
+    this.submitNewWorkplaceLocation = this.submitNewWorkplaceLocation.bind(
+      this
+    );
+    this.resetJCHours = this.resetJCHours.bind(this);
+    this.resetPATHours = this.resetPATHours.bind(this);
+    this.goToAddClient = this.goToAddClient.bind(this);
+    this.addNewClient = this.addNewClient.bind(this);
+    this.changeTier = this.changeTier.bind(this);
+    this.submitNewTier = this.submitNewTier.bind(this);
+    this.makeActive = this.makeActive.bind(this);
+    this.makeInactive = this.makeInactive.bind(this);
   }
 
-  changeEmployee(event) {
-    var currentEmployee = this.state.employees.filter(employee => {
-      return employee.name === event.target.textContent;
+  goHome() {
+    this.setState({
+      currentClient: "none",
+      addClient: false
+    });
+  }
+
+  changeClient(event) {
+    var currentClient = this.state.clients.filter(client => {
+      return "client" + client.id === event.target.id;
     });
     this.setState({
-      currentEmployee: currentEmployee[0],
-      addEmployee: false
+      currentClient: currentClient[0],
+      addClient: false
     });
   }
 
-  changeHours(event) {
+  changeJCHours(event) {
     this.setState({
-      addHours: parseInt(event.target.value)
+      jcCurrentHours: parseInt(event.target.value, 10)
     });
   }
 
-  submitNewHours() {
-    var employeeState = this.state.employees;
-    employeeState.forEach(employee => {
-      if (employee.name === this.state.currentEmployee.name) {
-        employee.currentHours += this.state.addHours;
+  submitNewJCHours() {
+    var clientState = this.state.clients;
+    clientState.forEach(client => {
+      if (client.name === this.state.currentClient.name) {
+        client.jcCurrentHours += this.state.jcCurrentHours;
       }
     });
     this.setState({
-      employees: employeeState
+      clients: clientState
+    });
+  }
+
+  changePATHours(event) {
+    this.setState({
+      patCurrentHours: parseInt(event.target.value, 10)
+    });
+  }
+
+  submitNewPATHours() {
+    var clientState = this.state.clients;
+    clientState.forEach(client => {
+      if (client.name === this.state.currentClient.name) {
+        client.patCurrentHours += this.state.patCurrentHours;
+      }
+    });
+    this.setState({
+      clients: clientState
     });
   }
 
@@ -87,70 +142,165 @@ class App extends Component {
   }
 
   submitNewDates() {
-    var employeeState = this.state.employees;
-    employeeState.forEach(employee => {
-      if (employee.name === this.state.currentEmployee.name) {
-        employee.beginDate = this.state.beginDate;
-        employee.endDate = this.state.endDate;
+    var clientState = this.state.clients;
+    clientState.forEach(client => {
+      if (client.name === this.state.currentClient.name) {
+        client.beginDate = this.state.beginDate;
+        client.endDate = this.state.endDate;
       }
     });
     this.setState({
-      employees: employeeState
+      clients: clientState
     });
   }
 
-  changeAllottedHours(event) {
-    console.log(event.target.value);
+  changeAuthJCHours(event) {
     this.setState({
-      allottedHours: parseInt(event.target.value)
+      jcAuthHours: parseInt(event.target.value, 10)
     });
   }
 
-  submitNewAllottedHours() {
-    var employeeState = this.state.employees;
-    employeeState.forEach(employee => {
-      if (employee.name === this.state.currentEmployee.name) {
-        employee.allottedHours = this.state.allottedHours;
+  submitNewAuthJCHours() {
+    var clientState = this.state.clients;
+    clientState.forEach(client => {
+      if (client.name === this.state.currentClient.name) {
+        client.jcAuthHours = this.state.jcAuthHours;
       }
     });
     this.setState({
-      employees: employeeState
+      clients: clientState
     });
   }
 
-  resetHours() {
-    var employeeState = this.state.employees;
-    employeeState.forEach(employee => {
-      if (employee.name === this.state.currentEmployee.name) {
-        employee.currentHours = 0;
+  changeAuthPATHours(event) {
+    this.setState({
+      patAuthHours: parseInt(event.target.value, 10)
+    });
+  }
+
+  submitNewAuthPATHours() {
+    var clientState = this.state.clients;
+    clientState.forEach(client => {
+      if (client.name === this.state.currentClient.name) {
+        client.patAuthHours = this.state.patAuthHours;
       }
     });
     this.setState({
-      employees: employeeState
+      clients: clientState
     });
   }
 
-  goToAddEmployee() {
+  changeTier(event) {
     this.setState({
-      addEmployee: true,
-      currentEmployee: "none"
+      tier: event.target.value
     });
   }
 
-  addNewEmployee(event) {
+  submitNewTier() {
+    var clientState = this.state.clients;
+    clientState.forEach(client => {
+      if (client.name === this.state.currentClient.name) {
+        client.tier = this.state.tier;
+      }
+    });
+    this.setState({
+      clients: clientState
+    });
+  }
+
+  changeWorkplaceLocation(event) {
+    this.setState({
+      workplaceLocation: event.target.value
+    });
+  }
+
+  submitNewWorkplaceLocation() {
+    var clientState = this.state.clients;
+    clientState.forEach(client => {
+      if (client.name === this.state.currentClient.name) {
+        client.workplaceLocation = this.state.workplaceLocation;
+      }
+    });
+    this.setState({
+      clients: clientState
+    });
+  }
+
+  resetJCHours() {
+    var clientState = this.state.clients;
+    clientState.forEach(client => {
+      if (client.name === this.state.currentClient.name) {
+        client.jcCurrentHours = 0;
+      }
+    });
+    this.setState({
+      clients: clientState
+    });
+  }
+
+  resetPATHours() {
+    var clientState = this.state.clients;
+    clientState.forEach(client => {
+      if (client.name === this.state.currentClient.name) {
+        client.patCurrentHours = 0;
+      }
+    });
+    this.setState({
+      clients: clientState
+    });
+  }
+
+  makeActive() {
+    var clientState = this.state.clients;
+    clientState.forEach(client => {
+      if (client.name === this.state.currentClient.name) {
+        client.active = true;
+      }
+    });
+    this.setState({
+      clients: clientState
+    });
+  }
+
+  makeInactive() {
+    var clientState = this.state.clients;
+    clientState.forEach(client => {
+      if (client.name === this.state.currentClient.name) {
+        client.active = false;
+      }
+    });
+    this.setState({
+      clients: clientState
+    });
+  }
+
+  goToAddClient() {
+    this.setState({
+      addClient: true,
+      currentClient: "none"
+    });
+  }
+
+  addNewClient(event) {
     event.preventDefault();
-    var newEmployee = {
+    var newClient = {
+      id: 3,
       name: event.target.name.value,
-      allottedHours: parseInt(event.target.allottedHours.value),
+      jcAuthHours: parseInt(event.target.jcAuthHours.value, 10),
+      jcCurrentHours: parseInt(event.target.jcCurrentHours.value, 10),
+      patAuthHours: parseInt(event.target.patAuthHours.value, 10),
+      patCurrentHours: parseInt(event.target.patCurrentHours.value, 10),
       beginDate: event.target.beginDate.value,
       endDate: event.target.endDate.value,
-      currentHours: 0
+      tier: event.target.tier.value,
+      workplaceLocation: event.target.workplaceLocation.value,
+      active: true
     };
-    var employeeState = this.state.employees;
-    employeeState.push(newEmployee);
+    var clientState = this.state.clients;
+    clientState.push(newClient);
     this.setState({
-      employees: employeeState,
-      addEmployee: false
+      clients: clientState,
+      addClient: false
     });
   }
 
@@ -160,28 +310,58 @@ class App extends Component {
         <header>
           <h1 className="h1">HrsTrkr</h1>
         </header>
-        <EmployeeDropdown
-          employeeData={this.state.employees}
-          clickHandler={this.changeEmployee}
-          goToAddEmployee={this.goToAddEmployee}
-        />
-        {this.state.currentEmployee !== "none" && (
+        <button
+          onClick={this.goHome}
+          type="button"
+          className="btn btn-outline-primary mainButton"
+        >
+          Home
+        </button>
+        {this.state.currentClient === "none" &&
+          this.state.addClient === false && (
+            <div>
+              <ClientList
+                clientData={this.state.clients}
+                changeClient={this.changeClient}
+              />
+              <button
+                onClick={this.goToAddClient}
+                type="button"
+                className="btn btn-outline-primary mainButton"
+              >
+                Add New Client
+              </button>
+            </div>
+          )}
+        {this.state.currentClient !== "none" && (
           <div>
-            <EmployeeData employeeData={this.state.currentEmployee} />
-            <EmployeeForm
-              changeHours={this.changeHours}
-              submitNewHours={this.submitNewHours}
+            <ClientData clientData={this.state.currentClient} />
+            <ClientForm
+              clientData={this.state.currentClient}
+              changeJCHours={this.changeJCHours}
+              submitNewJCHours={this.submitNewJCHours}
+              changePATHours={this.changePATHours}
+              submitNewPATHours={this.submitNewPATHours}
               changeBeginDate={this.changeBeginDate}
               changeEndDate={this.changeEndDate}
               submitNewDates={this.submitNewDates}
-              changeAllottedHours={this.changeAllottedHours}
-              submitNewAllottedHours={this.submitNewAllottedHours}
-              resetHours={this.resetHours}
+              changeAuthJCHours={this.changeAuthJCHours}
+              submitNewAuthJCHours={this.submitNewAuthJCHours}
+              changeAuthPATHours={this.changeAuthPATHours}
+              submitNewAuthPATHours={this.submitNewAuthPATHours}
+              changeTier={this.changeTier}
+              submitNewTier={this.submitNewTier}
+              changeWorkplaceLocation={this.changeWorkplaceLocation}
+              submitNewWorkplaceLocation={this.submitNewWorkplaceLocation}
+              resetJCHours={this.resetJCHours}
+              resetPATHours={this.resetPATHours}
+              makeActive={this.makeActive}
+              makeInactive={this.makeInactive}
             />
           </div>
         )}
-        {this.state.addEmployee === true && (
-          <AddEmployee addNewEmployee={this.addNewEmployee} />
+        {this.state.addClient === true && (
+          <AddClient addNewClient={this.addNewClient} />
         )}
       </div>
     );
